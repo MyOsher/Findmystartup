@@ -60,9 +60,28 @@ everything archived per-deal. Sold per-agent subscription.
 
 ---
 
+## Pricing model (decided: hybrid, usage-first)
+
+Pure subscription is a hard first sale to Israeli agents ("another standing order");
+pure pay-per-use hurts the future sale price (acquirers pay high multiples for
+recurring revenue, low multiples for lumpy usage revenue). So: usage-based as the
+entry door, subscription as the destination.
+
+| Tier | Price | What it's for |
+|---|---|---|
+| First report | Free | Zero-friction trial before a real listing pitch |
+| Single report | ₪49 | Pay only when competing for an exclusive — value moment pricing |
+| 5-report pack | ₪199 | Light discount, prepaid commitment |
+| Monthly subscription | ₪149/month | Up to 10 reports + full branding (logo, colors) + auto-refresh of reports when a new deal closes on the street |
+
+The math does the conversion: an active agent pitching 3–4 exclusives/month pays
+₪150–200 per-use — the subscription becomes the obvious choice. Usage pricing
+acquires customers; subscription builds the ARR that makes the company sellable.
+
 ## Recommended path
 
 1. Validate Idea 1 by using it on your own next 3 listings + showing it to 10 agents you know.
 2. If 3+ say "I'd pay for this," build the MVP (address in → branded report out).
-3. Charge from day one — even ₪99/month. Paying users are the only real validation.
-4. Revisit sellability after ~50 paying agents: that's when acquirers start to care.
+3. Charge from day one — ₪49/report. Paying users are the only real validation.
+4. Revisit sellability after ~50 paying agents / meaningful subscription ARR:
+   that's when acquirers start to care.
