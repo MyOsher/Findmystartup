@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>מחירון קומפס</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Suez+One&family=Heebo:wght@400;500;700&display=swap">
+<style>
+  :root {
+    --paper: #F5F7F5;
+    --card: #FFFFFF;
+    --ink: #1C2B27;
+    --muted: #5C6B66;
+    --faint: #8B968F;
+    --line: #E1E7E2;
+    --accent: #12855C;
+    --accent-ink: #0E6B4A;
+    --accent-soft: #E3F1EA;
+    --amber: #C46E14;
+    --hero-grad: linear-gradient(135deg, #10231D, #1C3A30);
+    --hero-ink: #F2F7F4;
+    --hero-muted: #A9C0B6;
+    --chip-bg: #EDF1EE;
+    --shadow: 0 1px 3px rgba(18, 35, 29, 0.08), 0 8px 24px rgba(18, 35, 29, 0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #131C19;
+      --card: #1B2622;
+      --ink: #E7EDE9;
+      --muted: #A3B2AB;
+      --faint: #77857E;
+      --line: #2C3833;
+      --accent: #279570;
+      --accent-ink: #4FBC96;
+      --accent-soft: #1E3129;
+      --amber: #C57A28;
+      --hero-grad: linear-gradient(135deg, #0D1F19, #1E3B30);
+      --hero-ink: #F2F7F4;
+      --hero-muted: #9FB8AD;
+      --chip-bg: #232F2A;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #131C19;
+    --card: #1B2622;
+    --ink: #E7EDE9;
+    --muted: #A3B2AB;
+    --faint: #77857E;
+    --line: #2C3833;
+    --accent: #279570;
+    --accent-ink: #4FBC96;
+    --accent-soft: #1E3129;
+    --amber: #C57A28;
+    --hero-grad: linear-gradient(135deg, #0D1F19, #1E3B30);
+    --hero-ink: #F2F7F4;
+    --hero-muted: #9FB8AD;
+    --chip-bg: #232F2A;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Heebo", "Arial Hebrew", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    direction: rtl;
+  }
+  .display { font-family: "Suez One", "Frank Ruhl Libre", Georgia, serif; font-weight: 400; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  .productbar {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 10px 20px;
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .productbar .brand { display: flex; align-items: center; gap: 8px; color: var(--accent-ink); }
+  .productbar .brand b { font-family: "Suez One", serif; font-weight: 400; font-size: 17px; letter-spacing: 0.02em; }
+  .demo-chip {
+    background: var(--chip-bg); color: var(--muted);
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 2px 12px; font-size: 12.5px; letter-spacing: 0.04em; white-space: nowrap;
+  }
+
+  .page { max-width: 940px; margin: 0 auto; padding: 44px 20px 60px; }
+
+  .hero { text-align: center; max-width: 620px; margin: 0 auto 14px; }
+  .eyebrow {
+    color: var(--accent-ink); font-size: 13px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  h1 {
+    font-family: "Suez One", serif; font-weight: 400;
+    font-size: clamp(30px, 5.5vw, 44px);
+    margin: 8px 0 10px; line-height: 1.15; text-wrap: balance;
+  }
+  .hero p { color: var(--muted); margin: 0; font-size: 17px; text-wrap: balance; }
+
+  .roi {
+    display: flex; justify-content: center; gap: 10px; align-items: baseline; flex-wrap: wrap;
+    background: var(--accent-soft); border: 1px solid var(--line);
+    border-radius: 999px; padding: 8px 22px;
+    width: fit-content; margin: 22px auto 40px;
+    font-size: 15px;
+  }
+  .roi b { color: var(--accent-ink); font-family: "Suez One", serif; font-weight: 400; font-size: 18px; }
+
+  .plans {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+    align-items: stretch;
+  }
+  .plan {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    box-shadow: var(--shadow); padding: 24px 22px 22px;
+    display: flex; flex-direction: column; position: relative;
+  }
+  .plan .name { font-family: "Suez One", serif; font-size: 18px; margin-bottom: 2px; }
+  .plan .for { color: var(--muted); font-size: 13.5px; min-height: 3em; }
+  .plan .price { font-family: "Suez One", serif; font-size: 34px; margin: 10px 0 0; font-variant-numeric: tabular-nums; }
+  .plan .per { color: var(--muted); font-size: 13.5px; margin-bottom: 14px; }
+  .plan ul { list-style: none; margin: 0 0 18px; padding: 0; font-size: 14px; color: var(--muted); }
+  .plan li { padding: 5px 0; display: flex; gap: 8px; align-items: flex-start; }
+  .plan li::before { content: "✓"; color: var(--accent-ink); font-weight: 700; flex: none; }
+  .plan .btn {
+    margin-top: auto; text-align: center; text-decoration: none;
+    border: 1.5px solid var(--accent); color: var(--accent-ink);
+    border-radius: 999px; padding: 9px 14px; font-weight: 700; font-size: 15px;
+  }
+  .plan.featured {
+    background: var(--hero-grad); color: var(--hero-ink);
+    border-color: transparent;
+  }
+  .plan.featured .for, .plan.featured .per, .plan.featured ul { color: var(--hero-muted); }
+  .plan.featured li::before { color: #7FD6B4; }
+  .plan.featured .btn { background: #E9F6EF; border-color: transparent; color: #0E4A34; }
+  .badge {
+    position: absolute; top: -12px; inset-inline-start: 50%; transform: translateX(50%);
+    background: var(--amber); color: #FFF7EC;
+    border-radius: 999px; padding: 3px 16px; font-size: 12.5px; font-weight: 700;
+    letter-spacing: 0.04em; white-space: nowrap;
+  }
+
+  .math-note {
+    max-width: 620px; margin: 34px auto 0; text-align: center;
+    color: var(--muted); font-size: 15px;
+  }
+  .math-note b { color: var(--ink); }
+
+  .cta-band {
+    margin: 44px auto 0; max-width: 720px;
+    background: var(--hero-grad); color: var(--hero-ink);
+    border-radius: 16px; padding: 26px 30px; box-shadow: var(--shadow);
+    display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+  }
+  .cta-band .display { font-size: 21px; margin-bottom: 2px; }
+  .cta-band .sub { color: var(--hero-muted); font-size: 14.5px; }
+  .cta {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: #E9F6EF; color: #0E4A34; text-decoration: none;
+    font-weight: 700; font-size: 16px; border-radius: 999px; padding: 12px 26px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  }
+
+  footer.pagefoot {
+    max-width: 720px; margin: 36px auto 0; padding-top: 16px;
+    border-top: 1px solid var(--line);
+    color: var(--faint); font-size: 12.5px; line-height: 1.7; text-align: center;
+  }
+
+  @media (max-width: 900px) { .plans { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .plans { grid-template-columns: 1fr; } .plan .for { min-height: 0; } }
+</style>
+
+<div class="productbar">
+  <div class="brand">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <circle cx="10" cy="10" r="8.5" stroke="currentColor" stroke-width="1.6"/>
+      <path d="M13.2 6.8 11 11l-4.2 2.2L9 9l4.2-2.2Z" fill="currentColor"/>
+    </svg>
+    <b>קומפס</b>
+  </div>
+  <span class="demo-chip">תצוגת דוגמה · מחירים לבדיקת שוק</span>
+</div>
+
+<div class="page">
+
+  <div class="hero">
+    <div class="eyebrow">מחירון</div>
+    <h1 class="display">הדוח שסוגר בלעדיות</h1>
+    <p>דוח שווי ממותג, מבוסס עסקאות אמת מרשות המסים ונכסים מתחרים בשוק — מוכן לשליחה למוכר תוך דקות.</p>
+  </div>
+
+  <div class="roi num">
+    <span>בלעדיות ממוצעת שווה</span><b>‎₪30,000+‎</b><span>בעמלה. דוח אחד עולה כמו ארוחת צהריים.</span>
+  </div>
+
+  <div class="plans">
+
+    <div class="plan">
+      <div class="name">דוח ראשון</div>
+      <div class="for">להתרשם בלי סיכון — על נכס אמיתי שלך</div>
+      <div class="price num">חינם</div>
+      <div class="per">ללא כרטיס אשראי</div>
+      <ul>
+        <li>דוח מלא אחד</li>
+        <li>עסקאות אמת + נכסים מתחרים</li>
+        <li>שליחה למוכר בקישור או PDF</li>
+      </ul>
+      <a class="btn" href="#" onclick="return false">מתחילים חינם</a>
+    </div>
+
+    <div class="plan">
+      <div class="name">דוח בודד</div>
+      <div class="for">כשיש פגישת בלעדיות על הפרק</div>
+      <div class="price num">₪49</div>
+      <div class="per">לדוח · תשלום רק כשצריך</div>
+      <ul>
+        <li>כל מה שבדוח החינמי</li>
+        <li>הלוגו והפרטים שלך על הדוח</li>
+        <li>מוכן תוך דקות מהזנת כתובת</li>
+      </ul>
+      <a class="btn" href="#" onclick="return false">הפקת דוח</a>
+    </div>
+
+    <div class="plan">
+      <div class="name">חבילת 5</div>
+      <div class="for">לחודש עמוס פגישות</div>
+      <div class="price num">₪199</div>
+      <div class="per">‏₪39.8 לדוח · בתוקף חצי שנה</div>
+      <ul>
+        <li>5 דוחות במחיר מוזל</li>
+        <li>הלוגו והפרטים שלך על הדוח</li>
+        <li>שיתוף בוואטסאפ בלחיצה</li>
+      </ul>
+      <a class="btn" href="#" onclick="return false">רכישת חבילה</a>
+    </div>
+
+    <div class="plan featured">
+      <div class="badge">הכי משתלם לסוכן פעיל</div>
+      <div class="name">מנוי חודשי</div>
+      <div class="for">למי שסוגר בלעדיות כל חודש</div>
+      <div class="price num">₪149</div>
+      <div class="per">לחודש · עד 10 דוחות · ביטול בכל עת</div>
+      <ul>
+        <li>מיתוג מלא: לוגו, צבעים, פרטי משרד</li>
+        <li>הדוח מתעדכן אוטומטית כשנסגרת עסקה חדשה ברחוב</li>
+        <li>התראה כשנכס מתחרה יורד במחיר</li>
+        <li>עדיפות בתמיכה</li>
+      </ul>
+      <a class="btn" href="#" onclick="return false">מצטרפים למנוי</a>
+    </div>
+
+  </div>
+
+  <p class="math-note num">
+    עושים חשבון? סוכן שמתמודד על 3–4 בלעדיות בחודש משלם ‎₪150–200‎ בדוחות בודדים —
+    <b>המנוי פשוט זול יותר, ומוסיף את העדכונים האוטומטיים.</b>
+  </p>
+
+  <div class="cta-band">
+    <div>
+      <div class="display">רוצה גישה מוקדמת?</div>
+      <div class="sub">אנחנו פותחים את קומפס לקבוצת סוכנים ראשונה · המצטרפים הראשונים נועלים מחיר לכל החיים</div>
+    </div>
+    <a class="cta" href="#" onclick="return false">אני רוצה להצטרף</a>
+  </div>
+
+  <footer class="pagefoot">
+    דוחות קומפס הם הערכה שיווקית ואינם מהווים שומת מקרקעין ואינם תחליף לשמאי מקרקעין מוסמך.<br>
+    <b>עמוד זה הוא דוגמת מוצר לבדיקת שוק</b> — המחירים אינם סופיים והכפתורים אינם פעילים.
+  </footer>
+
+</div>
+</html>

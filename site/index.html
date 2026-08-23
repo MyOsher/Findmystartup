@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>קומפס</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Suez+One&family=Heebo:wght@400;500;700&display=swap">
+<style>
+  :root {
+    --paper: #F5F7F5;
+    --card: #FFFFFF;
+    --ink: #1C2B27;
+    --muted: #5C6B66;
+    --faint: #8B968F;
+    --line: #E1E7E2;
+    --accent: #12855C;
+    --accent-ink: #0E6B4A;
+    --accent-soft: #E3F1EA;
+    --c-closed: #12855C;
+    --c-asking: #3A5DC9;
+    --c-subject: #C46E14;
+    --band: rgba(196, 110, 20, 0.13);
+    --hero-grad: linear-gradient(135deg, #10231D, #1C3A30);
+    --hero-ink: #F2F7F4;
+    --hero-muted: #A9C0B6;
+    --chip-bg: #EDF1EE;
+    --shadow: 0 1px 3px rgba(18, 35, 29, 0.08), 0 8px 24px rgba(18, 35, 29, 0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #131C19;
+      --card: #1B2622;
+      --ink: #E7EDE9;
+      --muted: #A3B2AB;
+      --faint: #77857E;
+      --line: #2C3833;
+      --accent: #279570;
+      --accent-ink: #4FBC96;
+      --accent-soft: #1E3129;
+      --c-closed: #279570;
+      --c-asking: #6884E8;
+      --c-subject: #C57A28;
+      --band: rgba(197, 122, 40, 0.16);
+      --hero-grad: linear-gradient(135deg, #0D1F19, #1E3B30);
+      --hero-ink: #F2F7F4;
+      --hero-muted: #9FB8AD;
+      --chip-bg: #232F2A;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #131C19;
+    --card: #1B2622;
+    --ink: #E7EDE9;
+    --muted: #A3B2AB;
+    --faint: #77857E;
+    --line: #2C3833;
+    --accent: #279570;
+    --accent-ink: #4FBC96;
+    --accent-soft: #1E3129;
+    --c-closed: #279570;
+    --c-asking: #6884E8;
+    --c-subject: #C57A28;
+    --band: rgba(197, 122, 40, 0.16);
+    --hero-grad: linear-gradient(135deg, #0D1F19, #1E3B30);
+    --hero-ink: #F2F7F4;
+    --hero-muted: #9FB8AD;
+    --chip-bg: #232F2A;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Heebo", "Arial Hebrew", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    direction: rtl;
+  }
+  .display { font-family: "Suez One", "Frank Ruhl Libre", Georgia, serif; font-weight: 400; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  .productbar {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 10px 20px;
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .productbar .brand { display: flex; align-items: center; gap: 8px; color: var(--accent-ink); }
+  .productbar .brand b { font-family: "Suez One", serif; font-weight: 400; font-size: 17px; letter-spacing: 0.02em; }
+  .productbar .tag { color: var(--muted); }
+  .demo-chip {
+    background: var(--chip-bg); color: var(--muted);
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 2px 12px; font-size: 12.5px; letter-spacing: 0.04em; white-space: nowrap;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 28px 20px 60px; }
+
+  .agent-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding-bottom: 20px; margin-bottom: 24px;
+    border-bottom: 2px solid var(--ink);
+    flex-wrap: wrap;
+  }
+  .agent-id { display: flex; align-items: center; gap: 14px; }
+  .monogram {
+    width: 52px; height: 52px; border-radius: 10px;
+    background: var(--hero-grad); color: var(--hero-ink);
+    display: grid; place-items: center;
+    font-family: "Suez One", serif; font-size: 26px;
+  }
+  .agent-id .name { font-family: "Suez One", serif; font-size: 20px; line-height: 1.2; }
+  .agent-id .role { color: var(--muted); font-size: 14px; }
+  .report-meta { text-align: left; color: var(--muted); font-size: 13.5px; line-height: 1.5; }
+
+  .eyebrow {
+    color: var(--accent-ink); font-size: 13px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  h1 {
+    font-family: "Suez One", serif; font-weight: 400;
+    font-size: clamp(28px, 5vw, 40px);
+    margin: 6px 0 4px; line-height: 1.15; text-wrap: balance;
+  }
+  .subtitle { color: var(--muted); margin: 0 0 14px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .chip {
+    background: var(--chip-bg); border: 1px solid var(--line);
+    border-radius: 999px; padding: 3px 13px; font-size: 13.5px; color: var(--ink);
+  }
+
+  .hero {
+    background: var(--hero-grad); color: var(--hero-ink);
+    border-radius: 16px; padding: 30px 30px 26px;
+    box-shadow: var(--shadow);
+    display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center;
+    margin-bottom: 34px;
+  }
+  .hero .label { color: var(--hero-muted); font-size: 14px; letter-spacing: 0.08em; }
+  .hero .range {
+    font-family: "Suez One", serif;
+    font-size: clamp(30px, 6vw, 46px);
+    line-height: 1.1; margin: 6px 0 10px;
+    font-variant-numeric: tabular-nums;
+  }
+  .hero .basis { color: var(--hero-muted); font-size: 14px; max-width: 46ch; }
+  .hero .reco {
+    text-align: center; background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 12px; padding: 16px 22px; min-width: 190px;
+  }
+  .hero .reco .t { font-size: 13px; color: var(--hero-muted); letter-spacing: 0.06em; }
+  .hero .reco .v { font-family: "Suez One", serif; font-size: 30px; margin: 2px 0; font-variant-numeric: tabular-nums; }
+  .hero .reco .s { font-size: 13px; color: var(--hero-muted); font-variant-numeric: tabular-nums; }
+
+  h2 {
+    font-family: "Suez One", serif; font-weight: 400; font-size: 22px;
+    margin: 40px 0 4px; text-wrap: balance;
+  }
+  .sec-sub { color: var(--muted); font-size: 14.5px; margin: 0 0 16px; }
+
+  .tabs { display: flex; gap: 8px; margin-bottom: 0; }
+  .tab {
+    appearance: none; border: 1px solid var(--line); background: var(--card);
+    color: var(--muted); font: inherit; font-size: 14.5px; font-weight: 500;
+    padding: 8px 18px; border-radius: 10px 10px 0 0; border-bottom: none;
+    cursor: pointer;
+  }
+  .tab[aria-selected="true"] { color: var(--ink); font-weight: 700; box-shadow: inset 0 3px 0 var(--accent); }
+  .tab:focus-visible, .cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .panel {
+    background: var(--card); border: 1px solid var(--line); border-radius: 0 12px 12px 12px;
+    box-shadow: var(--shadow); overflow: hidden;
+  }
+  .panel[hidden] { display: none; }
+  .tablewrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 14.5px; }
+  th {
+    text-align: right; font-size: 12.5px; letter-spacing: 0.06em; color: var(--muted);
+    font-weight: 700; padding: 12px 18px 8px; border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  td { padding: 10px 18px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  td.num, th.num-h { font-variant-numeric: tabular-nums; }
+  .psqm { font-weight: 700; }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-inline-start: 2px; }
+  .dot.closed { background: var(--c-closed); }
+  .dot.asking { background: var(--c-asking); }
+  .dom { color: var(--muted); font-size: 13px; }
+  .foot-note { padding: 10px 18px; color: var(--faint); font-size: 12.5px; border-top: 1px solid var(--line); }
+
+  .chart-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow); padding: 20px 20px 12px; margin-top: 18px;
+  }
+  .legend { display: flex; flex-wrap: wrap; gap: 18px; font-size: 13.5px; color: var(--muted); margin: 2px 2px 10px; }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .swatch { width: 11px; height: 11px; border-radius: 50%; }
+  .swatch.band { width: 18px; height: 11px; border-radius: 3px; background: var(--band); border: 1px dashed var(--c-subject); }
+  .chartwrap { overflow-x: auto; direction: ltr; position: relative; }
+  .chartwrap svg { display: block; min-width: 560px; width: 100%; height: auto; }
+  .tooltip {
+    position: absolute; pointer-events: none; direction: rtl;
+    background: var(--ink); color: var(--paper);
+    border-radius: 8px; padding: 7px 12px; font-size: 13px; line-height: 1.5;
+    opacity: 0; transition: opacity 0.12s; white-space: nowrap; z-index: 5;
+    font-variant-numeric: tabular-nums;
+  }
+  @media (prefers-reduced-motion: reduce) { .tooltip { transition: none; } }
+  circle.pt { cursor: pointer; }
+  circle.pt:focus-visible { outline: none; stroke: var(--ink); stroke-width: 2.5; }
+
+  .legal {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 10px; padding: 12px 16px;
+    margin: -20px 0 34px;
+    color: var(--muted); font-size: 13px; line-height: 1.7;
+  }
+  .legal .ic { flex: none; font-size: 15px; line-height: 1.5; }
+  .legal b { color: var(--ink); }
+
+  .insight {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: var(--accent-soft); border: 1px solid var(--line);
+    border-inline-start: 4px solid var(--accent);
+    border-radius: 10px; padding: 14px 18px; margin-top: 18px; font-size: 15px;
+  }
+  .insight b { color: var(--accent-ink); }
+
+  .math {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow); overflow: hidden;
+  }
+  .math .row {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+    padding: 12px 20px; border-bottom: 1px solid var(--line); font-size: 15px;
+  }
+  .math .row:last-child { border-bottom: none; }
+  .math .why { color: var(--muted); font-size: 13.5px; }
+  .math .val { font-variant-numeric: tabular-nums; font-weight: 500; white-space: nowrap; }
+  .math .pos { color: var(--accent-ink); }
+  .math .neg { color: var(--c-subject); }
+  .math .total { background: var(--accent-soft); font-weight: 700; }
+  .math .total .val { font-family: "Suez One", serif; font-size: 19px; font-weight: 400; }
+
+  .pitch { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .pitch .item {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 16px 18px; box-shadow: var(--shadow);
+  }
+  .pitch .item .n {
+    font-family: "Suez One", serif; color: var(--accent-ink); font-size: 15px; margin-bottom: 4px;
+  }
+  .pitch .item p { margin: 0; color: var(--muted); font-size: 14px; }
+
+  .cta-band {
+    margin-top: 26px; background: var(--hero-grad); color: var(--hero-ink);
+    border-radius: 16px; padding: 26px 28px; box-shadow: var(--shadow);
+    display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+  }
+  .cta-band .display { font-size: 22px; margin-bottom: 2px; }
+  .cta-band .sub { color: var(--hero-muted); font-size: 14.5px; }
+  .cta {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: #E9F6EF; color: #0E4A34; text-decoration: none;
+    font-weight: 700; font-size: 16px; border-radius: 999px; padding: 12px 26px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  }
+  .cta svg { flex: none; }
+
+  footer.report {
+    margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--line);
+    color: var(--faint); font-size: 12.5px; line-height: 1.7;
+  }
+
+  @media (max-width: 640px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero .reco { justify-self: stretch; }
+    .pitch { grid-template-columns: 1fr; }
+    .report-meta { text-align: right; }
+  }
+  @media print {
+    .productbar { display: none; }
+    body { background: #fff; }
+    .hero, .cta-band { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+
+<div class="productbar">
+  <div class="brand">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <circle cx="10" cy="10" r="8.5" stroke="currentColor" stroke-width="1.6"/>
+      <path d="M13.2 6.8 11 11l-4.2 2.2L9 9l4.2-2.2Z" fill="currentColor"/>
+    </svg>
+    <b>קומפס</b>
+    <span class="tag">· הדוח שסוגר בלעדיות</span>
+  </div>
+  <span class="demo-chip">תצוגת דוגמה · נתונים להמחשה</span>
+</div>
+
+<div class="page">
+
+  <header class="agent-head">
+    <div class="agent-id">
+      <div class="monogram">א</div>
+      <div>
+        <div class="name">אביב נכסים</div>
+        <div class="role">דנה אביב · תיווך ושיווק נדל״ן · רישיון 3-12345</div>
+      </div>
+    </div>
+    <div class="report-meta num">
+      דוח מס׳ 2026-0847<br>
+      הופק: 23 באוגוסט 2026
+    </div>
+  </header>
+
+  <div class="eyebrow">דוח הערכת שווי</div>
+  <h1 class="display">רחוב הגלבוע 14, גבעתיים</h1>
+  <p class="subtitle">הערכה מבוססת עסקאות אמת ברחוב ובסביבתו הקרובה, ונכסים מתחרים המוצעים כעת למכירה.</p>
+  <div class="chips">
+    <span class="chip">4 חדרים</span>
+    <span class="chip">98 מ״ר</span>
+    <span class="chip">קומה 3 מתוך 4</span>
+    <span class="chip">מרפסת שמש</span>
+    <span class="chip">חניה בטאבו</span>
+    <span class="chip">ללא מעלית</span>
+  </div>
+
+  <section class="hero">
+    <div>
+      <div class="label">טווח השווי המוערך</div>
+      <div class="range num">‏3.82 – 4.05 מיליון ₪</div>
+      <p class="basis">מבוסס על 6 עסקאות שנסגרו ברחוב וסביבתו ב־20 החודשים האחרונים, בהתאמה לקומה, למרפסת, לחניה ולמצב הנכס.</p>
+    </div>
+    <div class="reco">
+      <div class="t">מחיר פרסום מומלץ</div>
+      <div class="v num">₪3,990,000</div>
+      <div class="s num">≈ 40,700 ₪ למ״ר</div>
+    </div>
+  </section>
+
+  <div class="legal" role="note">
+    <span class="ic" aria-hidden="true">⚖️</span>
+    <div>
+      <b>הבהרה משפטית:</b> דוח זה הוא הערכה שיווקית בלתי מחייבת, המבוססת על נתונים פומביים, והוא
+      <b>אינו מהווה שומת מקרקעין</b> כמשמעותה בחוק שמאי מקרקעין, התשס״א־2001, ואינו תחליף לחוות דעת של
+      שמאי מקרקעין מוסמך. אין להסתמך על הדוח לצורך החלטות מימון, משכנתה, מיסוי או כל הליך משפטי.
+      לקבלת שומה מחייבת יש לפנות לשמאי מקרקעין בעל רישיון בתוקף.
+    </div>
+  </div>
+
+  <h2>מה באמת קורה ברחוב</h2>
+  <p class="sec-sub">עסקאות סגורות — מתוך נתוני רשות המסים. נכסים מוצעים — מחירים מבוקשים בשוק כרגע.</p>
+
+  <div role="tablist" class="tabs" aria-label="נתוני השוואה">
+    <button class="tab" role="tab" id="tab-closed" aria-selected="true" aria-controls="panel-closed">
+      <span class="dot closed"></span>&nbsp;עסקאות שנסגרו (6)
+    </button>
+    <button class="tab" role="tab" id="tab-asking" aria-selected="false" aria-controls="panel-asking">
+      <span class="dot asking"></span>&nbsp;מוצעים כעת (4)
+    </button>
+  </div>
+
+  <div class="panel" id="panel-closed" role="tabpanel" aria-labelledby="tab-closed">
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>כתובת</th><th>מועד</th><th class="num-h">חדרים</th><th class="num-h">מ״ר</th><th class="num-h">קומה</th><th class="num-h">מחיר סגירה</th><th class="num-h">₪ למ״ר</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>הגלבוע 8</td><td>ינואר 2025</td><td class="num">4</td><td class="num">95</td><td class="num">2</td><td class="num">₪3,620,000</td><td class="num psqm">38,105</td></tr>
+          <tr><td>הגלבוע 21</td><td>מרץ 2025</td><td class="num">3.5</td><td class="num">88</td><td class="num">3</td><td class="num">₪3,410,000</td><td class="num psqm">38,750</td></tr>
+          <tr><td>בורוכוב 55</td><td>יוני 2025</td><td class="num">4</td><td class="num">102</td><td class="num">1</td><td class="num">₪3,880,000</td><td class="num psqm">38,040</td></tr>
+          <tr><td>הגלבוע 14</td><td>ספטמבר 2025</td><td class="num">3</td><td class="num">75</td><td class="num">4</td><td class="num">₪2,960,000</td><td class="num psqm">39,470</td></tr>
+          <tr><td>הגלבוע 17</td><td>דצמבר 2025</td><td class="num">4</td><td class="num">100</td><td class="num">3</td><td class="num">₪3,980,000</td><td class="num psqm">39,800</td></tr>
+          <tr><td>כצנלסון 89</td><td>אפריל 2026</td><td class="num">4</td><td class="num">96</td><td class="num">2</td><td class="num">₪3,850,000</td><td class="num psqm">40,100</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="foot-note">מקור: מאגר עסקאות הנדל״ן, רשות המסים (נתוני דוגמה להמחשה).</div>
+  </div>
+
+  <div class="panel" id="panel-asking" role="tabpanel" aria-labelledby="tab-asking" hidden>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>כתובת</th><th class="num-h">חדרים</th><th class="num-h">מ״ר</th><th class="num-h">קומה</th><th class="num-h">מחיר מבוקש</th><th class="num-h">₪ למ״ר</th><th>בשוק</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>הגלבוע 9</td><td class="num">4</td><td class="num">100</td><td class="num">2</td><td class="num">₪4,350,000</td><td class="num psqm">43,500</td><td class="dom num">64 ימים</td></tr>
+          <tr><td>הגלבוע 26</td><td class="num">3.5</td><td class="num">85</td><td class="num">1</td><td class="num">₪3,590,000</td><td class="num psqm">42,235</td><td class="dom num">38 ימים</td></tr>
+          <tr><td>בורוכוב 61</td><td class="num">4</td><td class="num">105</td><td class="num">3</td><td class="num">₪4,590,000</td><td class="num psqm">43,715</td><td class="dom num">92 ימים</td></tr>
+          <tr><td>כצנלסון 72</td><td class="num">4</td><td class="num">95</td><td class="num">4</td><td class="num">₪4,050,000</td><td class="num psqm">42,630</td><td class="dom num">21 ימים</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="foot-note">מקור: לוחות נדל״ן פומביים (נתוני דוגמה להמחשה).</div>
+  </div>
+
+  <div class="chart-card">
+    <div class="legend">
+      <span><span class="swatch" style="background:var(--c-closed)"></span> מחיר סגירה בפועל</span>
+      <span><span class="swatch" style="background:var(--c-asking)"></span> מחיר מבוקש כעת</span>
+      <span><span class="swatch band"></span> טווח השווי המוערך לנכס</span>
+    </div>
+    <div class="chartwrap" id="chartwrap">
+      <svg id="chart" viewBox="0 0 720 300" role="img" aria-label="פיזור מחירים למטר רבוע: עסקאות סגורות לעומת מחירים מבוקשים, וטווח השווי המוערך"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+
+  <div class="insight">
+    <div>💡</div>
+    <div>
+      המחיר המבוקש הממוצע ברחוב גבוה בכ־<b>9%</b> ממחירי הסגירה בפועל — והנכסים היקרים ביותר הם גם אלה
+      שממתינים הכי הרבה זמן בשוק. <b>תמחור נכון מהיום הראשון</b> הוא מה שמביא קונים רציניים ומכירה מהירה במחיר מלא.
+    </div>
+  </div>
+
+  <h2>איך הגענו למספר</h2>
+  <p class="sec-sub">נקודת המוצא היא מחיר למ״ר בעסקאות האחרונות, עם התאמות למאפייני הנכס שלך.</p>
+  <div class="math">
+    <div class="row">
+      <div>בסיס: ₪ למ״ר בעסקאות האחרונות <span class="why">(משוקלל לטובת העסקאות החדשות)</span></div>
+      <div class="val num">39,900 ₪</div>
+    </div>
+    <div class="row">
+      <div>מרפסת שמש <span class="why">מבוקשת מאוד בבניינים ברחוב</span></div>
+      <div class="val pos num">‎+3%</div>
+    </div>
+    <div class="row">
+      <div>חניה בטאבו <span class="why">נדירה ברחוב, יתרון ממשי</span></div>
+      <div class="val pos num">‎+2%</div>
+    </div>
+    <div class="row">
+      <div>קומה 3 ללא מעלית <span class="why">מצמצם את קהל הקונים</span></div>
+      <div class="val neg num">‎−4%</div>
+    </div>
+    <div class="row">
+      <div>מצב הנכס: משופץ חלקית</div>
+      <div class="val pos num">‎+1%</div>
+    </div>
+    <div class="row total">
+      <div>שווי מוערך: ‎≈40,700 ₪ למ״ר × 98 מ״ר</div>
+      <div class="val num">₪3,990,000</div>
+    </div>
+  </div>
+
+  <h2>איך נמכור — בשלושה שלבים</h2>
+  <div class="pitch">
+    <div class="item">
+      <div class="n">שבוע 1 · הכנה</div>
+      <p>צילום מקצועי, הום־סטיילינג קל, ותמחור פתיחה מדויק על בסיס הדוח הזה.</p>
+    </div>
+    <div class="item">
+      <div class="n">שבועות 2–4 · חשיפה</div>
+      <p>קמפיין ממומן ממוקד קונים רלוונטיים, לצד מאגר הקונים הפעיל של המשרד.</p>
+    </div>
+    <div class="item">
+      <div class="n">משא ומתן וסגירה</div>
+      <p>סינון קונים רציניים בלבד, ניהול התמחרות כשיש ביקוש, וליווי עד החתימה.</p>
+    </div>
+  </div>
+
+  <div class="cta-band">
+    <div>
+      <div class="display">רוצים לדעת מה הנכס שלכם באמת שווה?</div>
+      <div class="sub">דנה אביב · אביב נכסים · 05X-000-0000</div>
+    </div>
+    <a class="cta" href="#" onclick="return false" aria-label="שיחת ווטסאפ עם דנה (דוגמה)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 2a8 8 0 1 1-4.2 14.8l-.5-.3-2.5.7.7-2.5-.3-.5A8 8 0 0 1 12 4Zm-3 4.2c-.2 0-.5 0-.7.3-.2.3-.9.9-.9 2.1s.9 2.5 1 2.6c.2.2 1.8 2.9 4.5 3.9 2.2.9 2.7.7 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-1 1.2c-.2.2-.3.2-.6.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4 0-.5.1-.7l.5-.6c.2-.2.2-.3.3-.5v-.5L9.6 8.7c-.2-.4-.4-.4-.6-.5H9Z"/>
+      </svg>
+      דברו איתי בווטסאפ
+    </a>
+  </div>
+
+  <footer class="report">
+    הדוח הופק באמצעות <b>קומפס</b> · מקורות: מאגר עסקאות רשות המסים ולוחות נדל״ן פומביים.<br>
+    הערכת השווי בדוח זה היא אינדיקציה שיווקית בלבד. היא אינה מהווה שומת מקרקעין כמשמעותה בחוק שמאי
+    מקרקעין, התשס״א־2001, אינה תחליף לשמאי מקרקעין מוסמך, ואין להסתמך עליה לצורך החלטות מימון, מיסוי
+    או הליך משפטי כלשהו.<br>
+    <b>עמוד זה הוא דוגמת מוצר</b> — כל הנתונים, השמות והמותגים בו בדויים ולהמחשה בלבד.
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    // Tabs
+    var tabs = document.querySelectorAll('.tab');
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        tabs.forEach(function (t) {
+          var on = t === tab;
+          t.setAttribute('aria-selected', on ? 'true' : 'false');
+          document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+        });
+      });
+    });
+
+    // Chart: price per m² over time. x = months since Jan 2025 (0..20), y = ₪/m²
+    var closed = [
+      { m: 0,    v: 38105, a: 'הגלבוע 8',    d: 'ינואר 2025 · 95 מ״ר · ₪3.62M' },
+      { m: 2,    v: 38750, a: 'הגלבוע 21',   d: 'מרץ 2025 · 88 מ״ר · ₪3.41M' },
+      { m: 5,    v: 38040, a: 'בורוכוב 55',  d: 'יוני 2025 · 102 מ״ר · ₪3.88M' },
+      { m: 8,    v: 39470, a: 'הגלבוע 14',   d: 'ספטמבר 2025 · 75 מ״ר · ₪2.96M' },
+      { m: 11,   v: 39800, a: 'הגלבוע 17',   d: 'דצמבר 2025 · 100 מ״ר · ₪3.98M' },
+      { m: 15,   v: 40100, a: 'כצנלסון 89',  d: 'אפריל 2026 · 96 מ״ר · ₪3.85M' }
+    ];
+    var asking = [
+      { m: 16.9, v: 43715, a: 'בורוכוב 61',  d: 'מבוקש ₪4.59M · 92 ימים בשוק' },
+      { m: 17.9, v: 43500, a: 'הגלבוע 9',    d: 'מבוקש ₪4.35M · 64 ימים בשוק' },
+      { m: 18.7, v: 42235, a: 'הגלבוע 26',   d: 'מבוקש ₪3.59M · 38 ימים בשוק' },
+      { m: 19.3, v: 42630, a: 'כצנלסון 72',  d: 'מבוקש ₪4.05M · 21 ימים בשוק' }
+    ];
+    var W = 720, H = 300, ML = 58, MR = 16, MT = 18, MB = 40;
+    var X0 = -0.8, X1 = 20.5, Y0 = 36000, Y1 = 46000;
+    function x(m) { return ML + (m - X0) / (X1 - X0) * (W - ML - MR); }
+    function y(v) { return MT + (Y1 - v) / (Y1 - Y0) * (H - MT - MB); }
+    var css = getComputedStyle(document.documentElement);
+    function tok(n) { return css.getPropertyValue(n).trim(); }
+
+    var svg = document.getElementById('chart');
+    var NS = 'http://www.w3.org/2000/svg';
+    function el(name, attrs, parent) {
+      var e = document.createElementNS(NS, name);
+      for (var k in attrs) e.setAttribute(k, attrs[k]);
+      (parent || svg).appendChild(e);
+      return e;
+    }
+
+    // grid + y labels
+    for (var gv = 36000; gv <= 46000; gv += 2000) {
+      el('line', { x1: ML, x2: W - MR, y1: y(gv), y2: y(gv), stroke: 'var(--line)', 'stroke-width': 1 });
+      el('text', { x: ML - 8, y: y(gv) + 4, 'text-anchor': 'end', 'font-size': 11.5,
+        fill: 'var(--faint)', 'font-family': 'Heebo, sans-serif' }).textContent = gv.toLocaleString('en-US');
+    }
+    // x labels
+    var months = [[0, 'ינו׳ 25'], [3, 'אפר׳'], [6, 'יול׳'], [9, 'אוק׳'], [12, 'ינו׳ 26'], [15, 'אפר׳'], [18, 'יול׳']];
+    months.forEach(function (t) {
+      el('text', { x: x(t[0]), y: H - 16, 'text-anchor': 'middle', 'font-size': 11.5,
+        fill: 'var(--faint)', 'font-family': 'Heebo, sans-serif' }).textContent = t[1];
+    });
+
+    // subject value band 39,800–41,300
+    el('rect', { x: ML, width: W - ML - MR, y: y(41300), height: y(39800) - y(41300),
+      fill: 'var(--band)', stroke: 'var(--c-subject)', 'stroke-dasharray': '5 4', 'stroke-width': 1 });
+    el('text', { x: W - MR - 8, y: y(41300) - 6, 'text-anchor': 'end', 'font-size': 12,
+      fill: 'var(--c-subject)', 'font-weight': 700, 'font-family': 'Heebo, sans-serif' })
+      .textContent = 'הטווח המוערך לנכס שלך';
+
+    // points + tooltip
+    var tip = document.getElementById('tooltip');
+    var wrap = document.getElementById('chartwrap');
+    function showTip(evt, p, kind) {
+      tip.innerHTML = '<b>' + p.a + '</b><br>' + p.d + '<br>' + p.v.toLocaleString('en-US') + ' ₪ למ״ר · ' + kind;
+      tip.style.opacity = 1;
+      var r = wrap.getBoundingClientRect();
+      var cr = evt.target.getBoundingClientRect();
+      var left = cr.left - r.left + wrap.scrollLeft + 12;
+      var top = cr.top - r.top - 10;
+      tip.style.left = Math.min(left, wrap.clientWidth - 230) + 'px';
+      tip.style.top = Math.max(top - tip.offsetHeight, 4) + 'px';
+    }
+    function hideTip() { tip.style.opacity = 0; }
+    function plot(data, color, kind) {
+      data.forEach(function (p) {
+        var c = el('circle', { class: 'pt', cx: x(p.m), cy: y(p.v), r: 6.5, fill: color,
+          stroke: 'var(--card)', 'stroke-width': 2, tabindex: 0 });
+        var t = el('title', {}, c);
+        t.textContent = p.a + ' · ' + p.v.toLocaleString('en-US') + ' ₪ למ״ר';
+        c.addEventListener('mouseenter', function (e) { showTip(e, p, kind); });
+        c.addEventListener('focus', function (e) { showTip(e, p, kind); });
+        c.addEventListener('mouseleave', hideTip);
+        c.addEventListener('blur', hideTip);
+      });
+    }
+    plot(closed, 'var(--c-closed)', 'נסגר');
+    plot(asking, 'var(--c-asking)', 'מבוקש');
+  })();
+</script>
+</html>
